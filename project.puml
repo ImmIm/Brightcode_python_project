@@ -1,0 +1,96 @@
+@startuml Reversi
+
+abstract class TurnBaseGame {
+    change_player()
+    make_move()
+    check_validity_of_move()
+    define_winner()
+}
+
+ReversiGame <|-- TurnBaseGame
+ReversiGame *-- Board
+ReversiGame *-- Player
+
+class ReversiGame {
+    board : Board
+    player : Enum
+    change_player()
+    make_move()
+    check_validity_of_move()
+    define_winner()
+}
+
+class Board {
+    size
+    board_cells : BoardCells
+    create_board()
+    update_cell()
+    get_cell()
+}
+
+Board *-- BoardCells
+
+enum Player {
+    first
+    second
+}
+
+enum BoardCells {
+    p1
+    p2
+    empty
+    notAllowed
+}
+
+abstract class View {
+    start_message()
+    render()
+}
+
+class BoardConsoleView {
+    board
+    render_board()
+}
+
+
+
+class ReversiConsoleView {
+    start_message()
+    display_menu()
+    render()
+}
+
+class ReversiGraphicalUi {
+    display_menu()
+    display_game()
+    render()
+}
+
+ReversiConsoleView <|-- View
+ReversiGraphicalUi <|-- View
+BoardConsoleView <|-- View
+
+
+abstract class Controller {
+    game : Game
+    view : View
+    start_game()
+}
+
+class ReversiConsoleController {
+    game : ReversiGame
+    view : ReversiConsoleView
+    board_view : BoardConsoleView
+    start_game()
+}
+
+ReversiConsoleController <|-- Controller
+
+
+ReversiConsoleController *-- ReversiConsoleView
+ReversiConsoleController *-- BoardConsoleView
+BoardConsoleView *-- BoardCells
+ReversiConsoleController *-- ReversiGame
+
+
+' Can you look through my diagram for project? Will it fit first part or I should think more?
