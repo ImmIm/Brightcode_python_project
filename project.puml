@@ -1,24 +1,93 @@
 @startuml Reversi
 
-abstract class TurnBaseGame {
+package model {
+
+    abstract class TurnBaseGame {
     change_player()
     make_move()
     check_validity_of_move()
     define_winner()
+    }
+
+    ReversiGame <|-- TurnBaseGame
+    ReversiGame *-- Board
+    ReversiGame *-- Player
+
+    class ReversiGame {
+        board : Board
+        player : Enum
+        change_player()
+        make_move()
+        check_validity_of_move()
+        define_winner()
+    }
+
+    class AiPlayer {
+        board
+        difficulty(int)
+        get_board()
+        calc_move()
+    }
+
+    ReversiGame *-- AiPlayer
+
+    class LogHandler {
+        log
+        update_log(string)
+        save_log(type : txt/dat)
+    }
 }
 
-ReversiGame <|-- TurnBaseGame
-ReversiGame *-- Board
-ReversiGame *-- Player
+package view {
+    abstract class View {
+    start_message()
+    render()
+    }
 
-class ReversiGame {
-    board : Board
-    player : Enum
-    change_player()
-    make_move()
-    check_validity_of_move()
-    define_winner()
+    class BoardConsoleView {
+        board
+        render_board()
+    }
+
+
+
+    class ReversiConsoleView {
+        start_message()
+        display_menu()
+        render()
+    }
+
+    class ReversiGraphicalUi {
+        display_menu()
+        display_game()
+        render()
+    }
+
+    ReversiConsoleView <|-- View
+    ReversiGraphicalUi <|-- View
+    BoardConsoleView <|-- View
+
+
 }
+
+
+package controller {
+    abstract class Controller {
+    game : Game
+    view : View
+    start_game()
+    }
+
+    class ReversiConsoleController {
+        game : ReversiGame
+        view : ReversiConsoleView
+        board_view : BoardConsoleView
+        start_game()
+    }
+}
+
+
+ReversiGame *-- LogHandler
 
 class Board {
     size
@@ -42,47 +111,24 @@ enum BoardCells {
     notAllowed
 }
 
-abstract class View {
-    start_message()
-    render()
+package Exeptions {
+
+    class WrongMoveError{
+
+    }
+
+    class WritingFileError{
+
+    }
+
+    class UnexpectedInputError {
+
+    }
 }
 
-class BoardConsoleView {
-    board
-    render_board()
-}
 
 
 
-class ReversiConsoleView {
-    start_message()
-    display_menu()
-    render()
-}
-
-class ReversiGraphicalUi {
-    display_menu()
-    display_game()
-    render()
-}
-
-ReversiConsoleView <|-- View
-ReversiGraphicalUi <|-- View
-BoardConsoleView <|-- View
-
-
-abstract class Controller {
-    game : Game
-    view : View
-    start_game()
-}
-
-class ReversiConsoleController {
-    game : ReversiGame
-    view : ReversiConsoleView
-    board_view : BoardConsoleView
-    start_game()
-}
 
 ReversiConsoleController <|-- Controller
 
@@ -93,4 +139,4 @@ BoardConsoleView *-- BoardCells
 ReversiConsoleController *-- ReversiGame
 
 
-' Can you look through my diagram for project? Will it fit first part or I should think more?
+@enduml
