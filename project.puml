@@ -5,10 +5,14 @@ package model {
     abstract class TurnBaseGame {
     change_player()
     make_move()
+    }
+
+    abstract class Rules {
     check_validity_of_move()
     define_winner()
     }
 
+    ReversiGame *-- Rules
     ReversiGame <|-- TurnBaseGame
     ReversiGame *-- Board
     ReversiGame *-- Player
@@ -16,10 +20,11 @@ package model {
     class ReversiGame {
         board : Board
         player : Enum
+        rules : Rules
         change_player()
         make_move()
-        check_validity_of_move()
-        define_winner()
+        rules.check_validity_of_move()
+        rules.define_winner()
     }
 
     class AiPlayer {
