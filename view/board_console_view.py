@@ -13,11 +13,11 @@ class BoardConsoleView(BoardView):
     header = '-' * (4 * board_size + 1)
     print(' ', end='')
     for i in range(board_size):
-      print(f'  {i} ', end='')
+      print(f'  {i + 1} ', end='')
     print(' ') 
     print(' ' + header)
     for i in range(board_size):
-      print(i, end='')
+      print(i + 1, end='')
       for j in range(board_size):
         cell = self.board.get_cell(i, j)
         print(f'| {self.symbols[cell]} ', end='')

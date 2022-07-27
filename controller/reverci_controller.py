@@ -34,7 +34,7 @@ class ReverciController(Controller):
             if terminated:
                 break
             self.game.board.clear_board_from_tips()
-            self.show_moves_tips(self.game.current_player)
+            self.show_moves_tips()
             self.view.board_view.draw_board()
             self.view.print_message(f'Player {self.game.current_player} now is your turn!\n')
             
@@ -42,7 +42,7 @@ class ReverciController(Controller):
             self.update_board(*move)
             self.game.change_player()
             self.view.board_view.board = self.game.board
-            # os.system('CLS')
+            os.system('CLS')
             
             
             
@@ -56,20 +56,30 @@ class ReverciController(Controller):
     
     # I really don'n know where put this function in MVC :)
     # It show hints, how many disks will be flipped in that possition
-    def show_moves_tips(self, player):
+    def show_moves_tips(self):
+        
         for row in range(self.game.size):
             for col in range(self.game.size):
-                # print(self.game.board.get_cell(row, col))
-                if self.game.board.get_cell(row, col) == player:
+                if self.game.board.get_cell(row, col) == self.game.other_player:
+                    
                     for route in self.game.rules.ROUTES:
-                        cell_near = (row + route[0], col + route[1])
-                        if self.game.board.get_cell(cell_near[0], cell_near[1]) == BoardCell.EMPTY:
-                            try:
-                                changes = self.game.rules.check_validity_of_move(self.game.board, cell_near[0], cell_near[1], player)
-                                self.game.board.update_cell(cell_near[0], cell_near[1], len(changes) * 10)
-                            except WrongMoveError:
-                                changes = []
-        
+                        try:
+                            if self.game.board.get_cell(row + route[0], col + route[1]) == BoardCell.EMPTY:
+                                if row + route[0] > 0 and col + route[1]:
+                                    cell_near = (row + route[0], col + route[1])
+                                    try:
+                                        changes = self.game.rules.check_validity_of_move(self.game.board, cell_near[0], cell_near[1], self.game.current_player, self.game.other_player)
+                                        self.game.board.update_cell(cell_near[0], cell_near[1], len(changes) * 10)
+                                    except WrongMoveError:
+                                        changes = [] 
+                        except IndexError:
+                            pass
+                                                             
+                                        
+                                        
+                                        
+                                    
+                                        
         
         
         
@@ -98,7 +108,7 @@ class ReverciController(Controller):
         
         while not correct_flag:
             try:
-                changes = self.game.rules.check_validity_of_move(self.game.board, moves[0], moves[1], self.game.current_player)
+                changes = self.game.rules.check_validity_of_move(self.game.board, moves[0], moves[1], self.game.current_player, self.game.other_player)
                 correct_flag = True
             except WrongMoveError:
                 self.view.print_message('Your move is incorrect, try again!\n')
