@@ -10,9 +10,8 @@ class TurnBaseGame(ABC):
         ABC (_type_): _description_
     """
     
-    def __init__(self, player) -> None:
+    def __init__(self) -> None:
         super().__init__()
-        self.player = player
     
     @abstractmethod
     def change_player():
@@ -21,12 +20,5 @@ class TurnBaseGame(ABC):
     @abstractmethod
     def make_move():
         pass
-    
-    @abstractmethod
-    def check_move_validity():
-        pass
-    
-    @abstractmethod
-    def define_winner():
-        pass
+
     

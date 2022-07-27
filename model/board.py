@@ -18,3 +18,10 @@ class Board:
 
   def update_cell(self, row, col, value):
     self.board[row][col] = value
+    
+    
+  def clear_board_from_tips(self):
+    for row in range(self.size):
+      for col in range(self.size):
+        if self.board[row][col] not in [BoardCell.EMPTY, Player.X, Player.O]:
+          self.board[row][col] = BoardCell.EMPTY
