@@ -9,10 +9,9 @@ class Board:
     self.size = size
 
     # Allocate the board with empty squares
-    middle = (size // 2) - 1
+
     self.board = [[BoardCell(0) for _ in range(size)] for _ in range(size)]
-    self.board[middle][middle], self.board[middle + 1][middle + 1] = BoardCell(1), BoardCell(1)
-    self.board[middle][middle + 1], self.board[middle + 1][middle] = BoardCell(2), BoardCell(2)
+
     
     
   def get_cell(self, row, col):

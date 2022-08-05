@@ -1,14 +1,12 @@
-from abc import ABC, abstractmethod
+from model.player import Player
 
-
-class Player(ABC):
+class AiPlayer(Player):
     
     def __init__(self) -> None:
         super().__init__()
         
-    @abstractmethod
     def make_move(self, board):
-        pass
+        return super().make_move(board)
     
     def pass_move(self):
-        pass
+        return super().pass_move()

@@ -26,7 +26,7 @@ class BoardCell:
 
         Args:
             value (int): logical value of cell
-            look (str, optional): _description_. Defaults to None if look default.
+            look (str, optional): new visual representation of cell. Defaults to None if look default.
 
         """
         self.value = value
@@ -37,6 +37,15 @@ class BoardCell:
     
     @classmethod
     def change_default_visuals(cls, key, value):
+        """Changes default visuals of cells
+
+        Args:
+            key (int): key for VISUALS dict
+            value (str): new visual representation of key
+
+        Raises:
+            InvalidVisualsKeyError: Raises if key doesn't exist in VISUALS
+        """
         if key in cls.VISUALS:
             cls.VISUALS[key] = value
         else:
