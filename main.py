@@ -12,7 +12,7 @@ from controller.reverci_controller import ReverciController
 
 
 # init of MVC
-game = ReverciGame(size=8)
+game = ReverciGame(size=4)
 board_view = BoardConsoleView(game.board)
 view = ReverciConsoleView(board_view)
 controller = ReverciController(view, game)

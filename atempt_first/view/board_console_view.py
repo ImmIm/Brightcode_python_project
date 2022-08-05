@@ -2,6 +2,7 @@ from view.board_view import BoardView
 from model.board import Board
 
 class BoardConsoleView(BoardView):
+  symbols = {0: ' ', 1: 'X', 2: 'O', 10: '1', 20: '2', 30: '3', 40: '4', 50: '5', 60: '6', 70: '7', 80: '8'}
 
   def __init__(self, board: Board) -> None:
     super().__init__(board)
@@ -19,6 +20,6 @@ class BoardConsoleView(BoardView):
       print(i + 1, end='')
       for j in range(board_size):
         cell = self.board.get_cell(i, j)
-        print(f'| {cell.look} ', end='')
+        print(f'| {self.symbols[cell]} ', end='')
       print('|')
     print(header)

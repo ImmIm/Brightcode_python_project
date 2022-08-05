@@ -6,7 +6,7 @@ from model.reverci_classic_rules import ReverciClassicRules
 
 class ReverciGame(TurnBaseGame):
     
-    def __init__(self, rules=ReverciClassicRules(), size=8):
+    def __init__(self, rules=ReverciClassicRules(), size=4):
         super().__init__()
         self.current_player = Player.X
         self.other_player = Player.O
