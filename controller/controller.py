@@ -3,10 +3,9 @@ from abc import ABC, abstractmethod
 
 class Controller(ABC):
     
-    def __init__(self, view, game) -> None:
+    def __init__(self) -> None:
         super().__init__()
-        self.view = view
-        self.game = game
+
         
     @abstractmethod    
     def start_game():

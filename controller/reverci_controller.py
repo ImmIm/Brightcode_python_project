@@ -1,12 +1,30 @@
+
 from controller.controller import Controller
 from model.board_cell import BoardCell
+from model.reverci_game_rules import ReverciRules
+from model.reverci_game import ReverciGame
 import os
 
 
 class ReverciController(Controller):
+     
+    game_rules = {
+        'classic' : ReverciGame(),
+        'reverse' : ReverciGame({
+        'start_position' : 'middle',
+        'wining_case' : 'reverse',
+    })
+    }
     
-    def __init__(self, view, game):
-        super().__init__(view, game)
+    
+    def __init__(self, size, mode, tips, visuals, view):
+        super().__init__()
+        self.size = size
+        self.mode = mode
+        self.tips = tips
+        self.visuals = visuals
+        self.view = view
+        
     
     def start_game(self):
        pass

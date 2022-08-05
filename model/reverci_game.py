@@ -5,12 +5,12 @@ from model.reverci_game_rules import ReverciRules
 
 class ReverciGame(TurnBaseGame):
     
-    def __init__(self, size=8):
+    def __init__(self, rules_params=None, size=8):
         super().__init__()
         self.current_player = PlayerEnum.X
         self.other_player = PlayerEnum.O
         self.board = Board(size)
-        self.rules = ReverciRules(self.board)
+        self.rules = ReverciRules(self.board, rules_params)
         self.size = size
         
     def change_player(self):

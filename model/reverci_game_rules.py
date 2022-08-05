@@ -108,7 +108,7 @@ class ReverciRules(GameRules):
                 return self.player_two_score
             else:
                 return 0
-        elif self.params['wining_case'] == 'reverce':
+        elif self.params['wining_case'] == 'reverse':
             if self.player_one_score < self.player_two_score:
                 return self.player_one_score
             elif self.player_one_score > self.player_two_score:
