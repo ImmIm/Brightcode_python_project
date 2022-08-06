@@ -1,14 +1,16 @@
+from errors.reverci_exceptions import NoPossibleMovesError, MoveOnPlayerCellError
 from model.turn_base_game import TurnBaseGame
 from model.board import Board
 from model.player_enum import PlayerEnum
+from model.human_player import HumanPlayer
 from model.reverci_game_rules import ReverciRules
 
 class ReverciGame(TurnBaseGame):
     
     def __init__(self, rules_params=None, size=8):
         super().__init__()
-        self.current_player = PlayerEnum.X
-        self.other_player = PlayerEnum.O
+        self.current_player = HumanPlayer(size, 1)
+        self.other_player = HumanPlayer(size, 2)
         self.board = Board(size)
         self.rules = ReverciRules(self.board, rules_params)
         self.size = size
@@ -16,6 +18,20 @@ class ReverciGame(TurnBaseGame):
     def change_player(self):
         self.current_player, self.other_player = self.other_player, self.current_player
     
-    # Сan raise WrongMoveError
-    def make_move(self, row, col):
-        return self.rules.check_validity_of_move(self.board, row, col, self.current_player, self.other_player)
+    
+    def make_move(self):
+        # Using exceptions for logic is not a good style, I know. Learned it too late :)
+        while True:
+            try:
+                discs_to_flip = self.current_player.make_move(self.rules, self.board, self.current_player.value, self.other_player.value)
+                break
+            except (NoPossibleMovesError, MoveOnPlayerCellError):
+                continue
+
+        print(discs_to_flip[1])
+        self.board.update_cell(int(discs_to_flip[0][0]) - 1, int(discs_to_flip[0][1]) - 1, self.current_player.value)
+        for cell in discs_to_flip[1]:
+            self.board.update_cell(cell[0], cell[1], self.current_player.value)
+
+
+        

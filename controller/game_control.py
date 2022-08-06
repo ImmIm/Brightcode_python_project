@@ -54,7 +54,11 @@ class GameControl:
         else:
             self.show_tips = False
         
-        controller = ReverciController(self.size, self.mode, self.show_tips, (self.player_one_look, self.player_two_look), self.game_view)
+        controller = ReverciController(self.size, self.mode,self.rules, self.show_tips, (self.player_one_look, self.player_two_look), self.game_view)
+        controller.start_game()
+        
+    def _dev_create_game(self):
+        controller = ReverciController(8, 1,'c', True, ('X', 'O'), 'c')
         controller.start_game()
         
     def get_info(self, user_input_string:str, reg:str):

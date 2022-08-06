@@ -5,10 +5,10 @@ from errors.reverci_exceptions import  MoveOnPlayerCellError, NoPossibleMovesErr
 class ReverciRules(GameRules):
     classic_params = {
         'start_position' : 'middle',
-        'wining_case' : 'classic',
+        'wining_case' : 'c',
     }
 
-    ROUTES = [(0,-1), (-1,-1), (-1, 0),(-1, 1), (0, 1), (1,1), (1,0), (1,-1), (0,0)]
+    ROUTES = [(0,-1), (-1,-1), (-1, 0),(-1, 1), (0, 1), (1,1), (1,0), (1,-1)]
   
     def __init__(self, board:Board, params:dict=classic_params):
         super().__init__()
@@ -68,18 +68,20 @@ class ReverciRules(GameRules):
                 next_cell = board.get_cell(next_move[0], next_move[1]) 
             except IndexError:
                 continue
+            if next_cell.value == player:
+                continue
             flag_opp = False
             flipped_discs_tmp = []
             while True:
-                if next_cell == opp_player:
+                if next_cell.value == opp_player:
                     flag_opp = True
-                if ((next_cell == player) and flag_opp):
+                if ((next_cell.value == player) and flag_opp):
                     flipped_discs.append(flipped_discs_tmp)
                     flag_opp = False
                     break
                 if next_cell == player:
                     break
-                if not (next_cell in [1,2]):
+                if not (next_cell.value in [1,2]):
                     break
                 flipped_discs_tmp.append((next_move[0], next_move[1]))
                 next_move = (next_move[0] +  route[0], next_move[1] + route[1])
@@ -101,14 +103,14 @@ class ReverciRules(GameRules):
         Returns:
             int: Score of winner or 0 if draw
         """
-        if self.params['wining_case'] == 'classic':
+        if self.params['wining_case'] == 'c':
             if self.player_one_score > self.player_two_score:
                 return self.player_one_score
             elif self.player_one_score < self.player_two_score:
                 return self.player_two_score
             else:
                 return 0
-        elif self.params['wining_case'] == 'reverse':
+        elif self.params['wining_case'] == 'r':
             if self.player_one_score < self.player_two_score:
                 return self.player_one_score
             elif self.player_one_score > self.player_two_score:
