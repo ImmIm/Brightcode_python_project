@@ -8,5 +8,5 @@ class AiPlayer(Player):
     def make_move(self, board):
         return super().make_move(board)
     
-    def pass_move(self):
-        return super().pass_move()
+    def calculate_move(self):
+        pass

@@ -64,10 +64,11 @@ class ReverciRules(GameRules):
         
         for route in self.ROUTES:
             next_move = (row + route[0], col + route[1])
-            try:
+            if (self.size - 1 >= next_move[0] >= 0) and (self.size - 1 >= next_move[1] >= 0):
                 next_cell = board.get_cell(next_move[0], next_move[1]) 
-            except IndexError:
+            else:
                 continue
+            
             if next_cell.value == player:
                 continue
             flag_opp = False
@@ -85,10 +86,12 @@ class ReverciRules(GameRules):
                     break
                 flipped_discs_tmp.append((next_move[0], next_move[1]))
                 next_move = (next_move[0] +  route[0], next_move[1] + route[1])
-                try:
-                    next_cell = board.get_cell(next_move[0], next_move[1])
-                except IndexError:
+                
+                if (self.size - 1 >= next_move[0] >= 0) and (self.size - 1 >= next_move[1] >= 0):
+                    next_cell = board.get_cell(next_move[0], next_move[1]) 
+                else:
                     break
+
                 
         flipped_discs = sum(flipped_discs, [])
         
