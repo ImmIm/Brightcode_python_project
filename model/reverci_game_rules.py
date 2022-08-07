@@ -8,7 +8,7 @@ class ReverciRules(GameRules):
         'wining_case' : 'c',
     }
 
-    ROUTES = [(0,-1), (-1,-1), (-1, 0),(-1, 1), (0, 1), (1,1), (1,0), (1,-1)]
+    ROUTES = [(0, 1), (0,-1), (-1,-1), (-1, 0),(-1, 1), (1,1), (1,0), (1,-1)]
   
     def __init__(self, board:Board, params:dict=classic_params):
         super().__init__()
@@ -52,7 +52,6 @@ class ReverciRules(GameRules):
 
         Raises:
             MoveOnPlayerCellError: Raises if move in on player cell
-            WrongMoveError: _description_
 
         Returns:
             list: list of all discs to be flipped
@@ -65,7 +64,7 @@ class ReverciRules(GameRules):
         for route in self.ROUTES:
             next_move = (row + route[0], col + route[1])
             if (self.size - 1 >= next_move[0] >= 0) and (self.size - 1 >= next_move[1] >= 0):
-                next_cell = board.get_cell(next_move[0], next_move[1]) 
+                next_cell = board.get_cell(next_move[0], next_move[1])
             else:
                 continue
             

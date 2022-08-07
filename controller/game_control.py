@@ -58,7 +58,7 @@ class GameControl:
         controller.start_game()
         
     def _dev_create_game(self):
-        controller = ReverciController(8, 2,'c', True, ('X', 'O'), 'c', 'd', 1)
+        controller = ReverciController(8, 2,'c', True, ('X', 'O'), 'c', 's', 2)
         controller.start_game()
         
     def get_info(self, user_input_string:str, reg:str):
