@@ -10,7 +10,7 @@ import os
 
 class ReverciController(Controller):
      
-    def __init__(self, size, mode, rules, tips, visuals, view):
+    def __init__(self, size, mode, rules, tips, visuals, view, ai_type, ai_level):
         super().__init__()
         self.size = size
         self.mode = mode
@@ -18,6 +18,8 @@ class ReverciController(Controller):
         self.visuals = visuals
         self.view = view
         self.rules = rules
+        self.ai_type = ai_type
+        self.ai_level = ai_level
         
     
     def start_game(self):
@@ -25,6 +27,9 @@ class ReverciController(Controller):
         game = ReverciGame({
         'start_position' : 'middle',
         'wining_case' : {self.rules},
+        'game_mode' : {self.mode},
+        'ai_type' : {self.ai_type},
+        'ai_level' : {self.ai_level}
         },self.size)
         
         game.rules.set_up_start()
@@ -32,15 +37,16 @@ class ReverciController(Controller):
         autopassed = 0
         while True:
             possible_moves = self.show_moves_tips(game)
-            print(f'Now is player {game.current_player.value} turn')
+            
             if len(possible_moves) == 0 and autopassed == 1:
+                print(game.rules.define_winner())
                 break
             if len(possible_moves) == 0:
                 autopassed = 0
-                print('Autopassed')
                 autopassed += 1
                 game.change_player()
                 continue
+            print(f'Now is player {game.current_player.value} turn')
             board_view.draw_board()
             game.make_move(possible_moves)
             game.change_player()

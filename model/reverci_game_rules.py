@@ -106,18 +106,21 @@ class ReverciRules(GameRules):
         Returns:
             int: Score of winner or 0 if draw
         """
-        if self.params['wining_case'] == 'c':
+        print(self.player_one_score)
+        print(self.player_two_score)
+        mode = self.params['wining_case'].pop()
+        if mode == 'c':
             if self.player_one_score > self.player_two_score:
-                return self.player_one_score
+                return f'Winner is player 1. Score is {self.player_one_score}'
             elif self.player_one_score < self.player_two_score:
-                return self.player_two_score
+                return f'Winner is player 2. Score is {self.player_two_score}'
             else:
                 return 0
-        elif self.params['wining_case'] == 'r':
+        elif mode == 'r':
             if self.player_one_score < self.player_two_score:
-                return self.player_one_score
+                return f'Winner is player 1. Score is {self.player_one_score}'
             elif self.player_one_score > self.player_two_score:
-                return self.player_two_score
+                return f'Winner is player 2. Score is {self.player_two_score}'
             else:
                 return 0           
     
