@@ -7,40 +7,106 @@ package model {
     make_move()
     }
 
-    abstract class Rules {
+    abstract class GameRules {
     check_validity_of_move()
     define_winner()
     }
 
-    ReversiGame *-- Rules
-    ReversiGame <|-- TurnBaseGame
-    ReversiGame *-- Board
-    ReversiGame *-- Player
+    class ReverciGameRules {
+        params : difficulty
+        board : Board
+        p_one_score : int
+        p_two_score : int
+        size : int
+        set_up()
+        check_validity_of_move()
+        define_winner()
+    }
+
+    ReversiGame *-- ReverciGameRules
+    ReverciGameRules *-- Board
+    ReverciGameRules <|-- GameRules
 
     class ReversiGame {
         board : Board
-        player : Enum
+        current_player : Player
+        other_player : Player
         rules : Rules
+        size : int
         change_player()
+        create_second_player()
         make_move()
-        rules.check_validity_of_move()
-        rules.define_winner()
     }
 
-    class AiPlayer {
-        board
-        difficulty(int)
-        get_board()
-        calc_move()
+    ReversiGame <|-- TurnBaseGame
+
+
+    abstract class Player {
+        make_move()
     }
 
-    ReversiGame *-- AiPlayer
 
-    class LogHandler {
-        log
-        update_log(string)
-        save_log(type : txt/dat)
+    abstract class AiPlayer {
+        make_move()
+        calculate_move()
     }
+
+    class AiDumbPlayer {
+        size : int
+        value: int
+        make_move()
+    }
+
+    class AiSmartPlayer {
+        size : int
+        value : int
+        difficulty : int
+        rules_parameters : difficulty
+        game : Game
+        make_move()
+        calculate_move()
+        minmax()
+    }
+
+
+    class HumanPlayer {
+        size : int
+        value : int
+        make_move()
+    }
+
+
+    AiPlayer <|-- Player
+    HumanPlayer <|-- Player
+    AiDumbPlayer <|-- AiPlayer
+    AiSmartPlayer <|-- AiPlayer
+
+    ReversiGame *-- HumanPlayer
+    ReversiGame *-- AiDumbPlayer
+    ReversiGame *-- AiSmartPlayer
+
+
+    class Board {
+        size
+        board : list[list[BoardCell]]
+        get_cell()
+        update_cell()
+        change_look()
+        look_to_default()
+    }
+
+    class BoardCell {
+        value : int
+        look : string
+        change_look()
+        default_look()
+        update_cell()
+        change_default_visuals()
+    }
+
+    Board *-- BoardCell
+    ReversiGame *-- Board
+
 }
 
 package view {
@@ -72,7 +138,6 @@ package view {
     ReversiGraphicalUi <|-- View
     BoardConsoleView <|-- View
 
-
 }
 
 
@@ -88,47 +153,48 @@ package controller {
         view : ReversiConsoleView
         board_view : BoardConsoleView
         start_game()
+        generate_game_results()
     }
 }
 
 
-ReversiGame *-- LogHandler
 
-class Board {
-    size
-    board_cells : BoardCells
-    create_board()
-    update_cell()
-    get_cell()
-}
 
-Board *-- BoardCells
-
-enum Player {
-    first
-    second
-}
-
-enum BoardCells {
-    p1
-    p2
-    empty
-    notAllowed
-}
 
 package Exeptions {
 
     class WrongMoveError{
-
+        move : tupple
+        player : int
     }
 
-    class WritingFileError{
-
+    class CellOutOfRangeError{
+        row : int
+        col : int
+        size : int
     }
 
-    class UnexpectedInputError {
-
+    class InvalidCellValueError {
+        value : int
     }
+
+    class InvalidVisualsKeyError {
+        key : string
+    }
+
+    class MoveOnPlayerCellError {
+        move : tupple
+        player : int
+    }
+
+    class NoPossibleMovesError {
+        move : tupple
+        player : int
+    }
+
+
+MoveOnPlayerCellError <|-- WrongMoveError
+NoPossibleMovesError<|-- WrongMoveError
 }
 
 
@@ -140,7 +206,6 @@ ReversiConsoleController <|-- Controller
 
 ReversiConsoleController *-- ReversiConsoleView
 ReversiConsoleController *-- BoardConsoleView
-BoardConsoleView *-- BoardCells
 ReversiConsoleController *-- ReversiGame
 
 
