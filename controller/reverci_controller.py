@@ -6,7 +6,7 @@ from view.board_console_view import BoardConsoleView
 from model.board_cell import BoardCell
 from errors.reverci_exceptions import NoPossibleMovesError, MoveOnPlayerCellError, CellOutOfRangeError
 import os
-
+from datetime import datetime
 
 class ReverciController(Controller):
      
@@ -23,23 +23,32 @@ class ReverciController(Controller):
         
     
     def start_game(self):
-        
+        """Function with game loop with all calls
+        """
         game = ReverciGame({
         'start_position' : 'middle',
         'wining_case' : {self.rules},
         'game_mode' : {self.mode},
         'ai_type' : {self.ai_type},
-        'ai_level' : {self.ai_level}
+        'ai_level' : {self.ai_level},
+        'visuals' : self.visuals
         },self.size)
         
+        begin_time = datetime.now().strftime('%m/%d/%Y, %H:%M:%S')
+        print(begin_time)
         game.rules.set_up_start()
         board_view = BoardConsoleView(game.board)
         autopassed = 0
         while True:
+            # os.system('CLS')
             possible_moves = self.show_moves_tips(game)
             
             if len(possible_moves) == 0 and autopassed == 1:
-                print(game.rules.define_winner())
+                board_view.draw_board()
+                winner = game.rules.define_winner()
+                print(winner)
+                end_time = datetime.now().strftime('%m/%d/%Y, %H:%M:%S')
+                self.generate_game_result_file(begin_time, winner)
                 break
             if len(possible_moves) == 0:
                 autopassed = 0
@@ -56,11 +65,36 @@ class ReverciController(Controller):
             
             # os.system('CLS')
         
-            
+    def generate_game_result_file(self, begin, result):
+        """Takes time of the start of the game and result of game and creates log .txt file
+
+        Args:
+            begin (str): Contains time of start of the game
+            result (str): Result of the game
+        """
+        end_time = datetime.now()
+        file_name = end_time.strftime('%m_%d_%Y_%H_%M_%S') + '.txt'
+        with open(file_name, 'w') as file:
+            file.write('Game started: ' + begin + '\n')
+            file.write('Game ended: ' + end_time.strftime('%m/%d/%Y, %H:%M:%S') + '\n')
+            file.write('Result: ' + result + '\n')
+        print('Created log file: ', file_name)
+        
         
     # I really don'n know where put this function in MVC :)
     # It show hints, how many disks will be flipped in that possition
     def show_moves_tips(self, game):
+        """Function loops for all enemy discs and calculates valid moves and what discs will be flipped by that move
+
+        Args:
+            game (Game): game class with logic of the game
+
+        Returns:
+            set: set of all possible moves and discs flipped by that move
+            format: {(int, int, int)} where:
+            [0] = number of flipped discs
+            [1], [2] = row and column
+        """
         possible_moves = set()
         changes = []
         for row in range(game.size):

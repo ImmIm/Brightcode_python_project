@@ -11,6 +11,18 @@ class HumanPlayer(Player):
         self.value = value
         
     def make_move(self, rules, board, current_player, other_player, p_moves):
+        """Function to return move 
+
+        Args:
+            rules (Rules): Rules of game
+            board (Board: game board
+            current_player (int): value of current player
+            other_player (int): value of opponent player
+            p_moves (set): set of possible moves
+
+        Returns:
+            tupple: best move to make and discs which should be flipped by this move
+        """
         user_input = input('Enter move in format *row, column*: ')
         match = re.fullmatch('(\d,\d|\d,* \d)',user_input)
         if match:

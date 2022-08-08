@@ -38,7 +38,7 @@ class GameControl:
         self.size = int(self.get_info('Enter size of board from 4 to 16 inclusive.\n', self.regs['size']))
         self.rules = self.get_info('Enter rules you want to play. [c]lassical or [r]everse. \n', self.regs['rules'])
         self.mode = self.get_info('Enter mode to play. 1 for PvP, 2 for PvE \n', self.regs['mode'])
-        if self.mode == 2:
+        if self.mode == '2':
             self.ai_type = self.get_info('Enter type of AI. [d]umd of [s]mart. \n', self.regs['AiType'])
         if self.ai_type in['s','S']:
             self.ai_level = self.get_info('Enter level of smart AI from 1 to 5 inclusive. \n', self.regs['AiLevel'])
@@ -54,11 +54,13 @@ class GameControl:
         else:
             self.show_tips = False
         
-        controller = ReverciController(self.size, self.mode,self.rules, self.show_tips, (self.player_one_look, self.player_two_look), self.game_view, self.ai_type, int(self.ai_level))
+        controller = ReverciController(self.size, self.mode,self.rules, self.show_tips, (self.player_one_look, self.player_two_look), self.game_view, self.ai_type, self.ai_level)
         controller.start_game()
         
     def _dev_create_game(self):
-        controller = ReverciController(8, 2,'c', True, ('X', 'O'), 'c', 's', 2)
+        """function for quick test development
+        """
+        controller = ReverciController(8, '2','c', True, ('X', 'O'), 'c', 's', 2)
         controller.start_game()
         
     def get_info(self, user_input_string:str, reg:str):

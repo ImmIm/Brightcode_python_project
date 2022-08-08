@@ -13,6 +13,10 @@ class ReverciGame(TurnBaseGame):
     def __init__(self, rules_params=None, size=8):
         super().__init__()
         self.board = Board(size)
+        visuals = rules_params['visuals']
+        if visuals:
+            self.board.change_visuals(1, visuals[0])
+            self.board.change_visuals(2, visuals[1])
         self.rules = ReverciRules(self.board, rules_params)
         self.current_player = AiDumbPlayer(size, 1)
         self.other_player = self.create_second_player(size, rules_params)
@@ -22,11 +26,20 @@ class ReverciGame(TurnBaseGame):
         self.current_player, self.other_player = self.other_player, self.current_player
     
     def create_second_player(self, size, rules_params):
-        if rules_params['game_mode'].pop() == 2:
+        """_summary_
+
+        Args:
+            size (int): size of game board
+            rules_params (dict): game parameters
+
+        Returns:
+            Player: player specified by params
+        """
+        if rules_params['game_mode'].pop() == '2':
             if rules_params['ai_type'].pop() == 'd': 
                 player = AiDumbPlayer(size, 2)
             else:
-                player = AiSmartPlayer(size, 2, rules_params['ai_level'].pop(), rules_params, self)
+                player = AiSmartPlayer(size, 2, int(rules_params['ai_level'].pop()), rules_params, self)
         else:
             player = HumanPlayer(size, 2)
         print(player)

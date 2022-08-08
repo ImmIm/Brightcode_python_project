@@ -13,6 +13,18 @@ class AiDumbPlayer(AiPlayer):
         self.value = value
         
     def make_move(self, rules, board, current_player, other_player, p_moves:set):
+        """Function to return move 
+
+        Args:
+            rules (Rules): Rules of game
+            board (Board: game board
+            current_player (int): value of current player
+            other_player (int): value of opponent player
+            p_moves (set): set of possible moves
+
+        Returns:
+            tupple: best move to make and discs which should be flipped by this move
+        """
         possible_moves = deepcopy(p_moves)
         maximum = 0
         best_move = None
