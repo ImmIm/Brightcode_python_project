@@ -20,6 +20,14 @@ class ReverciController(Controller):
         self.rules = rules
         self.ai_type = ai_type
         self.ai_level = ai_level
+        self.game = ReverciGame({
+        'start_position' : 'middle',
+        'wining_case' : {self.rules},
+        'game_mode' : {self.mode},
+        'ai_type' : {self.ai_type},
+        'ai_level' : {self.ai_level},
+        'visuals' : self.visuals
+        },self.size)
         
     
     def start_game(self):

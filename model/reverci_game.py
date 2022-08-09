@@ -18,7 +18,7 @@ class ReverciGame(TurnBaseGame):
             self.board.change_visuals(1, visuals[0])
             self.board.change_visuals(2, visuals[1])
         self.rules = ReverciRules(self.board, rules_params)
-        self.current_player = AiDumbPlayer(size, 1)
+        self.current_player = HumanPlayer(size, 1)
         self.other_player = self.create_second_player(size, rules_params)
         self.size = size
         
